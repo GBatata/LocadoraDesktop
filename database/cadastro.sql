@@ -75,3 +75,4 @@ CREATE TABLE tb_funcionario (
     UNIQUE KEY uk_funcionario_email (email),
     KEY ix_funcionario_nome (nome)
 ) ENGINE=InnoDB;
+GINE=InnoDB;
