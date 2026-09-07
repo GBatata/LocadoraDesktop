@@ -14,7 +14,7 @@ public class Cliente {
 	private String email;
 	private String celular;
 	private String cartao_credito;
-	private int calcao;
+	private String calcao;
 	
 	private String local_retirada;
 	private String local_devolucao;
@@ -27,13 +27,17 @@ public class Cliente {
 	private String protecao;
 	private String limite_quilometragem;
 	private String condutor_adicional;
+	private String assento_adicional;
 	private int id_funcionario;
 	
+	public Cliente() {
+		
+	}
 	
-	public Cliente(int id, String nome, String cpf, String cnh, String nacionalidade, String email, int calcao,
+	public Cliente(int id, String nome, String cpf, String cnh, String nacionalidade, String email, String calcao,
 			String local_retirada, String local_devolucao, Date data_retirada, LocalTime hora_retirada,
 			Date data_devolucao, LocalTime hora_devolucao, String grupo_carro, String protecao,
-			String limite_quilometragem, String condutor_adicional, int id_funcionario) {
+			String limite_quilometragem, String condutor_adicional, String assento_adicional, int id_funcionario) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -52,6 +56,7 @@ public class Cliente {
 		this.protecao = protecao;
 		this.limite_quilometragem = limite_quilometragem;
 		this.condutor_adicional = condutor_adicional;
+		this.assento_adicional = assento_adicional;
 		this.id_funcionario = id_funcionario;
 	}
 	
@@ -110,10 +115,10 @@ public class Cliente {
 	public void setCartao_credito(String cartao_credito) {
 		this.cartao_credito = cartao_credito;
 	}
-	public int getCalcao() {
+	public String getCalcao() {
 		return calcao;
 	}
-	public void setCalcao(int calcao) {
+	public void setCalcao(String calcao) {
 		this.calcao = calcao;
 	}
 	public String getLocal_retirada() {
@@ -182,8 +187,19 @@ public class Cliente {
 	public void setId_funcionario(int id_funcionario) {
 		this.id_funcionario = id_funcionario;
 	}
+
+
+	public String getAssento_adicional() {
+		return assento_adicional;
+	}
+
+
+	public void setAssento_adicional(String assento_adicional) {
+		this.assento_adicional = assento_adicional;
+	}
 	
 	
 	
 }
+
 
