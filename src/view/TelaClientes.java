@@ -28,56 +28,30 @@ import javax.swing.table.DefaultTableModel;
 public class TelaClientes extends JPanel {
 
   private final JTextField txtId = new JTextField(8),
-    txtNome = new JTextField(30),
-    txtDataNascimento = new JTextField(12),
+    txtNome = new JTextField(30),    
     txtCpf = new JTextField(16),
     txtCnh = new JTextField(16),
+    txtDataNascimento = new JTextField(12),
     txtNacionalidade = new JTextField(30),
     txtEmail = new JTextField(30),
     txtCelular = new JTextField(30),
-    txtCartaoCdt = new JTextField(30),
-    txtCalcao = new JTextField(30),
-    
-    txtLocalRetirada = new JTextField(30),
-    txtLocalDevolucao = new JTextField(30),
-    txtDataRetirada = new JTextField(30),
-    txtDataDevolucao = new JTextField(30),
-    txtHoraRetirada = new JTextField(30),
-    txtHoraDevolucao = new JTextField(30),
-    txtGrupoCarro = new JTextField(30),
-    txtProtecao = new JTextField(30),
-    txtLimiteQuilometragem = new JTextField(30),
-    txtCondutor = new JTextField(30),
-    txtAssentoAdicional = new JTextField(30),
-    txtIdFuncionario = new JTextField(30),
-  
     txtPesquisa = new JTextField(25);
+  
+  private final JCheckBox chkResideBr =
+		    new JCheckBox("Reside no Brasil", true);
   
   private final DefaultTableModel modelo =
 		    new DefaultTableModel(
 		      new Object[] {
 		        "ID",
-		        "Nome",
-		        "Data de nascimento",
+		        "Nome",		        
 		        "CPF",
-		        "CNH",		        
+		        "CNH",
+		        "Data de nascimento",		        
 		        "Nacionalidade",
+		        "Reside no Brasil",
 		        "E-mail",
-		        "Celular",
-		        "Cartão de crédito",
-		        "Calção",
-		        "Local de retirada",
-		        "Local de devolução",
-		        "Data da retirada",
-		        "Hora da retirada",
-		        "Data da devolução",
-		        "Hora da devolução",
-		        "Grupo de carros",
-		        "Proteção",
-		        "Limite de quilometragem",
-		        "Condutor adicional",
-		        "Assento adicional",
-		        "Id do funcionário"
+		        "Celular"
 		      },
 		      0
 		    ) {
@@ -131,18 +105,12 @@ public class TelaClientes extends JPanel {
 				          txtNome
 				        );
 		        
-		        adicionar(
-				          formulario,
-				          g,
-				          2,
-				          "Data de nascimento*:",
-				          txtDataNascimento
-				        );
+		        
 
 		        adicionar(
 				          formulario,
 				          g,
-				          3,
+				          2,
 				          "CPF*:",
 				          txtCpf
 				        );
@@ -150,10 +118,18 @@ public class TelaClientes extends JPanel {
 		        adicionar(
 						  formulario,
 						  g,
-						  4,
+						  3,
 						  "CNH*:",
 						  txtCnh
 						);
+		        
+		        adicionar(
+				          formulario,
+				          g,
+				          4,
+				          "Data de nascimento*:",
+				          txtDataNascimento
+				        );
 		        
 		        adicionar(
 						  formulario,
@@ -162,6 +138,8 @@ public class TelaClientes extends JPanel {
 						  "Nacionalidade*:",
 						  txtNacionalidade
 						);
+		        
+		        
 		        
 		        adicionar(
 						  formulario,
@@ -179,124 +157,16 @@ public class TelaClientes extends JPanel {
 						  txtCelular
 						);
 		        
-		        adicionar(
-						  formulario,
-						  g,
-						  8,
-						  "Cartão de Crédito*:",
-						  txtCartaoCdt
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  9,
-						  "Calção*:",
-						  txtCalcao
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  10,
-						  "Local de Retirada*:",
-						  txtLocalRetirada
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  11,
-						  "Local de Devolução*:",
-						  txtLocalDevolucao
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  12,
-						  "Data de Retirada*:",
-						  txtDataRetirada
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  13,
-						  "Hora de Retirada*:",
-						  txtHoraRetirada
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  14,
-						  "Data de Devolução*:",
-						  txtDataDevolucao
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  15,
-						  "Hora de Devolução*:",
-						  txtHoraDevolucao
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  16,
-						  "Grupo do carro*:",
-						  txtGrupoCarro
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  17,
-						  "Proteção*:",
-						  txtProtecao
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  18,
-						  "Limite de quilometragem*:",
-						  txtLimiteQuilometragem
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  19,
-						  "Condutor adicional*:",
-						  txtCondutor
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  20,
-						  "Assento adicional*:",
-						  txtAssentoAdicional
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  21,
-						  "ID do funcionário*:",
-						  txtIdFuncionario
-						);
-		        
 
 		        txtId.setEditable(false);
 
 		        txtDataNascimento.setToolTipText(
 		          "Utilize o formato dd/MM/yyyy"
 		        );
+		        
+		        g.gridx = 1;
+		        g.gridy = 6;
+		        formulario.add(chkResideBr, g);
 
 		        JPanel botoes =
 		          new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -429,28 +299,14 @@ public class TelaClientes extends JPanel {
 
 		    public void limparFormulario() {
 		    			txtId.setText("");
-		    			txtNome.setText("");
-		    		    txtDataNascimento.setText("");
+		    			txtNome.setText("");		    		    
 		    		    txtCpf.setText("");
 		    		    txtCnh.setText("");
+		    		    txtDataNascimento.setText("");
 		    		    txtNacionalidade.setText("");
+		    		    chkResideBr.setSelected(true);
 		    		    txtEmail.setText("");
-		    		    txtCelular.setText("");
-		    		    txtCartaoCdt.setText("");
-		    		    txtCalcao.setText("");
-		    		    
-		    		    txtLocalRetirada.setText("");
-		    		    txtLocalDevolucao.setText("");
-		    		    txtDataRetirada.setText("");
-		    		    txtDataDevolucao.setText("");
-		    		    txtHoraRetirada.setText("");
-		    		    txtHoraDevolucao.setText("");
-		    		    txtGrupoCarro.setText("");
-		    		    txtProtecao.setText("");
-		    		    txtLimiteQuilometragem.setText("");
-		    		    txtCondutor.setText("");
-		    		    txtAssentoAdicional.setText("");
-		    		    txtIdFuncionario.setText("");	        
+		    		    txtCelular.setText("");        
 		    		    tabela.clearSelection();
 		    }
 		    
@@ -462,21 +318,6 @@ public class TelaClientes extends JPanel {
 		    		    txtNacionalidade.setEditable(habilitado);
 		    		    txtEmail.setEditable(habilitado);
 		    		    txtCelular.setEditable(habilitado);
-		    		    txtCartaoCdt.setEditable(habilitado);
-		    		    txtCalcao.setEditable(habilitado);
-		    		    
-		    		    txtLocalRetirada.setEditable(habilitado);
-		    		    txtLocalDevolucao.setEditable(habilitado);
-		    		    txtDataRetirada.setEditable(habilitado);
-		    		    txtDataDevolucao.setEditable(habilitado);
-		    		    txtHoraRetirada.setEditable(habilitado);
-		    		    txtHoraDevolucao.setEditable(habilitado);
-		    		    txtGrupoCarro.setEditable(habilitado);
-		    		    txtProtecao.setEditable(habilitado);
-		    		    txtLimiteQuilometragem.setEditable(habilitado);
-		    		    txtCondutor.setEditable(habilitado);
-		    		    txtAssentoAdicional.setEditable(habilitado);
-		    		    txtIdFuncionario.setEditable(habilitado);
 		      }
 		    
 		    public void mostrarCliente(Cliente cliente) {
@@ -484,47 +325,18 @@ public class TelaClientes extends JPanel {
 		          String.valueOf(cliente.getId())
 		        );
 		        
-		        		txtNome.setText(cliente.getNome());
-		        	    txtDataNascimento.setText(
-		        	    	      Validador.formatarData(
-		        	    	    	        cliente.getData_nascimento()
-		        	    	    	      )
-		        	    	    	    );
+		        		txtNome.setText(cliente.getNome());		        	    
 		        	    txtCpf.setText(cliente.getCpf());
 		        	    txtCnh.setText(cliente.getCnh());
+		        	    txtDataNascimento.setText(
+		        	    	      Validador.formatarData(
+		        	    	    	        cliente.getDataNascimento()
+		        	    	    	      )
+		        	    	    	    );
 		        	    txtNacionalidade.setText(cliente.getNacionalidade());
 		        	    txtEmail.setText(cliente.getEmail());
 		        	    txtCelular.setText(cliente.getCelular());
-		        	    txtCartaoCdt.setText("");
-		        	    txtCalcao.setText(cliente.getCalcao());
-		        	    
-		        	    txtLocalRetirada.setText(cliente.getLocal_retirada());
-		        	    txtLocalDevolucao.setText(cliente.getLocal_devolucao());
-		        	    txtDataRetirada.setDate(Validador.formatarData(
-		        	            cliente.getData_retirada()
-		        	    	      )
-		        	    	    );
-		        	    txtDataDevolucao.setText(Validador.formatarData(
-		        	            cliente.getData_devolucao()
-		        	    	      )
-		        	    	    );
-		        	    txtHoraRetirada.setText(Validador.formatarHora(
-		        	            cliente.getHora_retirada()
-		        	    	      )
-		        	    	    );
-		        	    txtHoraDevolucao.setText(Validador.formatarHora(
-		        	            cliente.getHora_devolucao()
-		        	    	      )
-		        	    	    );
-		        	    txtGrupoCarro.setText(cliente.getGrupo_carro());
-		        	    txtProtecao.setText(cliente.getProtecao());
-		        	    txtLimiteQuilometragem.setText(cliente.getLimite_quilometragem());
-		        	    txtCondutor.setText(cliente.getCondutor_adicional());
-		        	    txtAssentoAdicional.setText(cliente.getAssento_adicional());
-		        	    txtIdFuncionario.setText(
-		      		          String.valueOf(cliente.getId_funcionario())
-		        		        );
-
+		        	    chkResideBr.setSelected(cliente.isResideBrasil());
 		        
 		      }
 		    
@@ -541,40 +353,20 @@ public class TelaClientes extends JPanel {
 		          modelo.addRow(
 		            new Object[] {
 		              Integer.valueOf(cliente.getId()),
-		              cliente.getNome(),
-		              Validador.formatarData(
-		                cliente.getData_nascimento()
-		              ),
+		              cliente.getNome(),		              
 		              cliente.getCpf(),
 		              cliente.getCnh(),
+		              Validador.formatarData(
+		                cliente.getDataNascimento()
+		              ),
 		              cliente.getNacionalidade(),
 		              cliente.getEmail(),
 		              cliente.getCelular(),
-		              cliente.getCartao_credito(),
-		              cliente.getCalcao(),
-		              cliente.getLocal_retirada(),
-		              cliente.getLocal_devolucao(),
-		              Validador.formatarData(
-		            	cliente.getData_retirada()
-		              ),
-		              Validador.formatarData(
-				       	cliente.getData_devolucao()
-				      ),
-		              Validador.formatarHora(
-				        cliente.getHora_retirada()
-				      ),
-		              Validador.formatarHora(
-				        cliente.getHora_devolucao()
-				      ),
-		              cliente.getGrupo_carro(),
-		              cliente.getProtecao(),
-		              cliente.getLimite_quilometragem(),
-		              cliente.getCondutor_adicional(),
-		              cliente.getAssento_adicional(),
-		              Integer.valueOf(cliente.getId_funcionario()),
+		              cliente.isResideBrasil() ? "Sim" : "Nao"
 		            }
 		          );
 		        }
+		    }
 		        
 		        public int getIdSelecionado() {
 		            try {
@@ -619,68 +411,16 @@ public class TelaClientes extends JPanel {
 				return txtCelular;
 			}
 
-			public JTextField getTxtCartaoCdt() {
-				return txtCartaoCdt;
-			}
-
-			public JTextField getTxtCalcao() {
-				return txtCalcao;
-			}
-
-			public JTextField getTxtLocalRetirada() {
-				return txtLocalRetirada;
-			}
-
-			public JTextField getTxtLocalDevolucao() {
-				return txtLocalDevolucao;
-			}
-
-			public JTextField getTxtDataRetirada() {
-				return txtDataRetirada;
-			}
-
-			public JTextField getTxtDataDevolucao() {
-				return txtDataDevolucao;
-			}
-
-			public JTextField getTxtHoraRetirada() {
-				return txtHoraRetirada;
-			}
-
-			public JTextField getTxtHoraDevolucao() {
-				return txtHoraDevolucao;
-			}
-
-			public JTextField getTxtGrupoCarro() {
-				return txtGrupoCarro;
-			}
-
-			public JTextField getTxtProtecao() {
-				return txtProtecao;
-			}
-
-			public JTextField getTxtLimiteQuilometragem() {
-				return txtLimiteQuilometragem;
-			}
-
-			public JTextField getTxtCondutor() {
-				return txtCondutor;
-			}
-
-			public JTextField getTxtAssentoAdicional() {
-				return txtAssentoAdicional;
-			}
-
-			public JTextField getTxtIdFuncionario() {
-				return txtIdFuncionario;
-			}
-
 			public JTextField getTxtPesquisa() {
 				return txtPesquisa;
 			}
 
 			public JTable getTabela() {
 				return tabela;
+			}
+
+			public JCheckBox getChkResideBr() {
+				return chkResideBr;
 			}
 		    
 		    
