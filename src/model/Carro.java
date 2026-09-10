@@ -1,96 +1,129 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class Carro {
-	
-	private int id;
-	private String placa;
-	private String modelo_carro;
-	private String grupo_carro;
-	private String direcao;
-	private int numero_assento;
-	private boolean gps;
-	private boolean reservado;
-	
-	
-	public Carro() {		
-	}
-	public Carro(int id, String placa, String modelo_carro, String grupo_carro, String direcao, int numero_assento,
-			boolean gps, boolean reservado) {
-		super();
-		this.id = id;
-		this.placa = placa;
-		this.modelo_carro = modelo_carro;
-		this.grupo_carro = grupo_carro;
-		this.direcao = direcao;
-		this.numero_assento = numero_assento;
-		this.gps = gps;
-		this.reservado = reservado;
-	}
-	
 
-	public int getId() {
-		return id;
-	}
+  public static final String DISPONIVEL = "DISPONIVEL";
+  public static final String LOCADO = "LOCADO";
+  public static final String INATIVO = "INATIVO";
 
-	public void setId(int id) {
-		this.id = id;
-	}
+  private int id;
+  private String placa;
+  private String modeloCarro;
+  private String grupoCarro;
+  private String cambio;
+  private int numeroAssentos;
+  private boolean gps;
+  private String localAtual;
+  private String limiteQuilometragem;
+  private BigDecimal valorDiaria;
+  private BigDecimal valorCaucao;
+  private String status;
 
-	public String getPlaca() {
-		return placa;
-	}
+  public Carro() {
+    valorDiaria = BigDecimal.ZERO;
+    valorCaucao = BigDecimal.ZERO;
+    status = DISPONIVEL;
+  }
 
-	public void setPlaca(String placa) {
-		this.placa = placa;
-	}
+  public int getId() {
+    return id;
+  }
 
-	public String getModelo_carro() {
-		return modelo_carro;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	public void setModelo_carro(String modelo_carro) {
-		this.modelo_carro = modelo_carro;
-	}
+  public String getPlaca() {
+    return placa;
+  }
 
-	public String getGrupo_carro() {
-		return grupo_carro;
-	}
+  public void setPlaca(String placa) {
+    this.placa = placa;
+  }
 
-	public void setGrupo_carro(String grupo_carro) {
-		this.grupo_carro = grupo_carro;
-	}
+  public String getModeloCarro() {
+    return modeloCarro;
+  }
 
-	public String getDirecao() {
-		return direcao;
-	}
+  public void setModeloCarro(String modeloCarro) {
+    this.modeloCarro = modeloCarro;
+  }
 
-	public void setDirecao(String direcao) {
-		this.direcao = direcao;
-	}
+  public String getGrupoCarro() {
+    return grupoCarro;
+  }
 
-	public int getNumero_assento() {
-		return numero_assento;
-	}
+  public void setGrupoCarro(String grupoCarro) {
+    this.grupoCarro = grupoCarro;
+  }
 
-	public void setNumero_assento(int numero_assento) {
-		this.numero_assento = numero_assento;
-	}
+  public String getCambio() {
+    return cambio;
+  }
 
-	public boolean isGps() {
-		return gps;
-	}
+  public void setCambio(String cambio) {
+    this.cambio = cambio;
+  }
 
-	public void setGps(boolean gps) {
-		this.gps = gps;
-	}
+  public int getNumeroAssentos() {
+    return numeroAssentos;
+  }
 
-	public boolean isReservado() {
-		return reservado;
-	}
+  public void setNumeroAssentos(int numeroAssentos) {
+    this.numeroAssentos = numeroAssentos;
+  }
 
-	public void setReservado(boolean reservado) {
-		this.reservado = reservado;
-	}
-	
-	
+  public boolean isGps() {
+    return gps;
+  }
+
+  public void setGps(boolean gps) {
+    this.gps = gps;
+  }
+
+  public String getLocalAtual() {
+    return localAtual;
+  }
+
+  public void setLocalAtual(String localAtual) {
+    this.localAtual = localAtual;
+  }
+
+  public String getLimiteQuilometragem() {
+    return limiteQuilometragem;
+  }
+
+  public void setLimiteQuilometragem(String limiteQuilometragem) {
+    this.limiteQuilometragem = limiteQuilometragem;
+  }
+
+  public BigDecimal getValorDiaria() {
+    return valorDiaria;
+  }
+
+  public void setValorDiaria(BigDecimal valorDiaria) {
+    this.valorDiaria = valorDiaria;
+  }
+
+  public BigDecimal getValorCaucao() {
+    return valorCaucao;
+  }
+
+  public void setValorCaucao(BigDecimal valorCaucao) {
+    this.valorCaucao = valorCaucao;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String toString() {
+    return placa + (modeloCarro == null ? "" : " - " + modeloCarro);
+  }
 }
