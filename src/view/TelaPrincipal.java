@@ -23,9 +23,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import br.com.biblioteca.view.TelaClientes;
-import br.com.biblioteca.view.TelaLivros;
-import br.com.biblioteca.view.TelaUsuarios;
+import view.TelaClientes;
+import view.TelaCarros;
+import view.TelaLocacao;
+import view.TelaFuncionarios;
 
 public class TelaPrincipal extends JFrame {
 
@@ -133,10 +134,12 @@ public class TelaPrincipal extends JFrame {
 
     JMenuItem clientes = item("Clientes", 1);
     JMenuItem carros = item("Carros", 2);
-    JMenuItem funcionarios = item("Funcionarios", 3);
+    JMenuItem locacoes = item("Locações", 3);
+    JMenuItem funcionarios = item("Funcionarios", 4);
 
     cadastros.add(clientes);
     cadastros.add(carros);
+    cadastros.add(locacoes);
     cadastros.add(funcionarios);
 
     JMenuItem sobre = new JMenuItem("Sobre");
@@ -192,8 +195,8 @@ public class TelaPrincipal extends JFrame {
   }
 
   private void abrirModulo(int modulo) {
-	    String titulo;
-	    JPanel painel;
+	    String titulo = null;
+	    JPanel painel = null;
 	    if (modulo == 1) {
 	      titulo = "Clientes";
 	      if (selecionar(titulo)) return;
@@ -203,10 +206,14 @@ public class TelaPrincipal extends JFrame {
 	      if (selecionar(titulo)) return;
 	      painel = new TelaCarros();
 	    } else if (modulo == 3) {
-	      titulo = "Funcionarios";
+	      titulo = "Locações";
 	      if (selecionar(titulo)) return;
-	      painel = new TelaFuncionarios();
-	    }
+	      painel = new TelaLocacao();
+	    } else if (modulo == 4) {
+		      titulo = "Funcionarios";
+		      if (selecionar(titulo)) return;
+		      painel = new TelaFuncionarios();
+		    }
 	    abrirAba(titulo, painel);
   }
 
