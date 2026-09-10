@@ -31,12 +31,16 @@ public class TelaCarros extends JPanel {
     txtPlaca = new JTextField(30),
     txtModelo = new JTextField(30),
     txtGrupo = new JTextField(30),
-    txtDirecao = new JTextField(30),
+    txtCambio = new JTextField(30),
     txtNumeroAssento = new JTextField(30),
+    txtLocalAtual = new JTextField(30),
+    txtLimiteQuilometragem = new JTextField(30),
+    txtValorDiaria = new JTextField(30),    
+    txtValorCaucao = new JTextField(30),
+    txtStatus = new JTextField(30),
     txtPesquisa = new JTextField(25);
   
   private final JCheckBox chkGps = new JCheckBox("Tem GPS", false);
-  private final JCheckBox chkReservado = new JCheckBox("Reservado", false);
   
   private final DefaultTableModel modelo =
 		    new DefaultTableModel(
@@ -45,10 +49,14 @@ public class TelaCarros extends JPanel {
 		        "Placa",
 		        "Modelo",
 		        "Grupo",
-		        "Direção",
+		        "Câmbio",
 		        "Número de assentos",
 		        "GPS",
-		        "Está reservado"
+		        "Local atual",
+		        "Limite de quilometragem",
+		        "Valor da diária",
+		        "Valor Caução",
+		        "Status"
 		      },
 		      0
 		    ) {
@@ -123,8 +131,8 @@ public class TelaCarros extends JPanel {
 		          formulario,
 		          g,
 		          4,
-		          "Direção*:",
-		          txtDirecao
+		          "Câmbio*:",
+		          txtCambio
 		        );
 
 		        adicionar(
@@ -134,6 +142,46 @@ public class TelaCarros extends JPanel {
 		          "Número de assentos*:",
 		          txtNumeroAssento
 		        );
+		        
+		        adicionar(
+				          formulario,
+				          g,
+				          6,
+				          "Local Atual*:",
+				          txtLocalAtual
+				        );
+		        
+		        adicionar(
+				          formulario,
+				          g,
+				          7,
+				          "Limite de quilometragem*:",
+				          txtLimiteQuilometragem
+				        );
+		        
+		        adicionar(
+				          formulario,
+				          g,
+				          8,
+				          "Valor da diária*:",
+				          txtValorDiaria
+				        );
+		        
+		        adicionar(
+				          formulario,
+				          g,
+				          9,
+				          "Valor do caução*:",
+				          txtValorCaucao
+				        );
+		        
+		        adicionar(
+				          formulario,
+				          g,
+				          10,
+				          "Status*:",
+				          txtStatus
+				        );
 
 		        txtId.setEditable(false);
 
@@ -141,9 +189,6 @@ public class TelaCarros extends JPanel {
 		        g.gridy = 6;
 		        formulario.add(chkGps, g);
 
-
-		        g.gridy = 7;
-		        formulario.add(chkReservado, g);
 
 		        JPanel botoes =
 		          new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -276,10 +321,14 @@ public class TelaCarros extends JPanel {
 		    			txtPlaca.setText("");
 		    		    txtModelo.setText("");
 		    		    txtGrupo.setText("");
-		    		    txtDirecao.setText("");
+		    		    txtCambio.setText("");
 		    		    txtNumeroAssento.setText("");
 		    		    chkGps.setSelected(false);
-		    		    chkReservado.setSelected(false);
+		    		    txtLocalAtual.setText("");
+		    		    txtLimiteQuilometragem.setText("");
+		    		    txtValorDiaria.setText("");
+		    		    txtValorCaucao.setText("");
+		    		    txtStatus.setText("");
 		    			tabela.clearSelection();
 		      }
 
@@ -287,10 +336,14 @@ public class TelaCarros extends JPanel {
 		    	  			txtPlaca.setEditable(habilitado);
 		    			    txtModelo.setEditable(habilitado);
 		    			    txtGrupo.setEditable(habilitado);
-		    			    txtDirecao.setEditable(habilitado);
+		    			    txtCambio.setEditable(habilitado);
 		    			    txtNumeroAssento.setEditable(habilitado);
 		    	  			chkGps.setEnabled(habilitado);
-		    	  			chkReservado.setEnabled(habilitado);
+		    	  			txtLocalAtual.setEditable(habilitado);
+		    	  			txtLimiteQuilometragem.setEditable(habilitado);
+		    	  			txtValorDiaria.setEditable(habilitado);
+		    	  			txtValorCaucao.setEditable(habilitado);
+		    	  			txtStatus.setEditable(habilitado);
 		      }
 		      
 		      public void mostrarCliente(Carro carro) {
@@ -298,14 +351,19 @@ public class TelaCarros extends JPanel {
 		    	      String.valueOf(carro.getId())
 		    	    );
 		    	    txtPlaca.setText(carro.getPlaca());
-    			    txtModelo.setText(carro.getModelo_carro());
-    			    txtGrupo.setText(carro.getGrupo_carro());
-    			    txtDirecao.setText(carro.getDirecao());
+    			    txtModelo.setText(carro.getModeloCarro());
+    			    txtGrupo.setText(carro.getGrupoCarro());
+    			    txtCambio.setText(carro.getCambio());
     			    txtNumeroAssento.setText(
-    			    	      String.valueOf(carro.getNumero_assento())
+    			    	      String.valueOf(carro.getNumeroAssentos())
     			    	    );
 		    	    chkGps.setSelected(carro.isGps());
-		    	    chkReservado.setSelected(carro.isReservado());
+		    	    txtLocalAtual.setText(carro.getLocalAtual());
+		    	    txtLimiteQuilometragem.setText(carro.getLimiteQuilometragem());
+		    	    txtValorDiaria.setText(String.valueOf(carro.getValorDiaria()));
+		    	    txtValorCaucao.setText(String.valueOf(carro.getValorCaucao()));
+		    	    txtStatus.setText(carro.getStatus());
+		    	    
 		    	  }
 		      
 		      public void preencherTabela(List<Carro> lista) {
@@ -320,11 +378,16 @@ public class TelaCarros extends JPanel {
 		    	        new Object[] {
 		    	          Integer.valueOf(carro.getId()),
 		    	          carro.getPlaca(),
-		    	          carro.getModelo_carro(),
-		    	          carro.getGrupo_carro(),
-		    	          carro.getDirecao(),		    	          Integer.valueOf(carro.getNumero_assento()),
+		    	          carro.getModeloCarro(),
+		    	          carro.getGrupoCarro(),
+		    	          carro.getCambio(),		    	          
+		    	          Integer.valueOf(carro.getNumeroAssentos()),
 		    	          carro.isGps() ? "Sim" : "Nao",
-		    	          carro.isReservado() ? "Sim" : "Nao"
+		    	          carro.getLocalAtual(),
+		    	          carro.getLimiteQuilometragem(),
+		    	          carro.getValorDiaria(),
+		    	          carro.getValorCaucao(),
+		    	          carro.getStatus(),
 		    	        }
 		    	      );
 		    	    }
@@ -356,30 +419,45 @@ public class TelaCarros extends JPanel {
 					  return txtGrupo;
 				  }
 
-				  public JTextField getTxtDirecao() {
-					  return txtDirecao;
+				  public JTextField getTxtCambio() {
+					  return txtCambio;
 				  }
 
 				  public JTextField getTxtNumeroAssento() {
 					  return txtNumeroAssento;
 				  }
 
-				  public JTextField getTxtPesquisa() {
-					  return txtPesquisa;
+				  public JTextField getTxtLocalAtual() {
+					  return txtLocalAtual;
 				  }
 
-				  public JTable getTabela() {
-					  return tabela;
+				  public JTextField getTxtLimiteQuilometragem() {
+					  return txtLimiteQuilometragem;
+				  }
+
+				  public JTextField getTxtValorDiaria() {
+					  return txtValorDiaria;
+				  }
+
+				  public JTextField getTxtValorCaucao() {
+					  return txtValorCaucao;
+				  }
+
+				  public JTextField getTxtStatus() {
+					  return txtStatus;
+				  }
+
+				  public JTextField getTxtPesquisa() {
+					  return txtPesquisa;
 				  }
 
 				  public JCheckBox getChkGps() {
 					  return chkGps;
 				  }
 
-				  public JCheckBox getChkReservado() {
-					  return chkReservado;
+				  public JTable getTabela() {
+					  return tabela;
 				  }
-		    	  
-		    	  
+
 
 }
