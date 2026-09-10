@@ -31,6 +31,7 @@ public class TelaFuncionarios extends JPanel {
     txtCpf = new JTextField(16),
     txtEmail = new JTextField(30),
     txtDataNascimento = new JTextField(12),
+    txtPerfil = new JTextField(30),
     txtPesquisa = new JTextField(25);
 
   private final JPasswordField txtSenha =
@@ -47,6 +48,7 @@ public class TelaFuncionarios extends JPanel {
         "CPF",
         "E-mail",
         "Data de nascimento",
+        "Perfil",
         "Ativo"
       },
       0
@@ -124,11 +126,19 @@ public class TelaFuncionarios extends JPanel {
       "Data de nascimento*:",
       txtDataNascimento
     );
+    
+    adicionar(
+    	      formulario,
+    	      g,
+    	      5,
+    	      "Perfil*:",
+    	      txtPerfil
+    	    );
 
     adicionar(
       formulario,
       g,
-      5,
+      6,
       "Senha*:",
       txtSenha
     );
@@ -283,6 +293,7 @@ public class TelaFuncionarios extends JPanel {
     txtCpf.setText("");
     txtEmail.setText("");
     txtDataNascimento.setText("");
+    txtPerfil.setText("");
     txtSenha.setText("");
     chkAtivo.setSelected(true);
     tabela.clearSelection();
@@ -293,6 +304,7 @@ public class TelaFuncionarios extends JPanel {
     txtCpf.setEditable(habilitado);
     txtEmail.setEditable(habilitado);
     txtDataNascimento.setEditable(habilitado);
+    txtPerfil.setEditable(habilitado);
     txtSenha.setEditable(habilitado);
     chkAtivo.setEnabled(habilitado);
   }
@@ -305,13 +317,12 @@ public class TelaFuncionarios extends JPanel {
     txtNome.setText(funcionario.getNome());
     txtCpf.setText(funcionario.getCpf());
     txtEmail.setText(funcionario.getEmail());
-
     txtDataNascimento.setText(
       Validador.formatarData(
     		  funcionario.getDataNascimento()
       )
     );
-
+    txtPerfil.setText(funcionario.getPerfil());
     txtSenha.setText("");
     chkAtivo.setSelected(funcionario.isAtivo());
   }
@@ -333,6 +344,7 @@ public class TelaFuncionarios extends JPanel {
           Validador.formatarData(
         		  funcionario.getDataNascimento()
           ),
+          funcionario.getPerfil(),
           funcionario.isAtivo() ? "Sim" : "Nao"
         }
       );
@@ -371,6 +383,11 @@ public class TelaFuncionarios extends JPanel {
 
   public JTextField getTxtPesquisa() {
     return txtPesquisa;
+  }
+  
+
+  public JTextField getTxtPerfil() {
+	return txtPerfil;
   }
 
   public JCheckBox getChkAtivo() {
