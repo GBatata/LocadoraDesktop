@@ -10,8 +10,6 @@ public class Funcionario {
   private String cpf;
   private String email;
   private Date dataNascimento;
-  private String senhaHash;
-  private String senhaSalt;
   private boolean ativo;
 
   public Funcionario() {
@@ -63,22 +61,6 @@ public class Funcionario {
 
   public void setDataNascimento(Date dataNascimento) {
     this.dataNascimento = dataNascimento;
-  }
-
-  public String getSenhaHash() {
-    return senhaHash;
-  }
-
-  public void setSenhaHash(String senhaHash) {
-    this.senhaHash = senhaHash;
-  }
-
-  public String getSenhaSalt() {
-    return senhaSalt;
-  }
-
-  public void setSenhaSalt(String senhaSalt) {
-    this.senhaSalt = senhaSalt;
   }
 
   public boolean isAtivo() {

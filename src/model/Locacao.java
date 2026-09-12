@@ -19,15 +19,9 @@ public class Locacao {
   private Date dataDevolucao;
   private String localRetirada;
   private String localDevolucao;
-  private String protecao;
-  private String condutorAdicional;
-  private boolean cadeirinha;
   private String limiteQuilometragem;
-  private boolean cartaoConferido;
   private int quantidadeDiarias;
   private BigDecimal valorDiaria;
-  private BigDecimal valorProtecao;
-  private BigDecimal valorAdicionais;
   private BigDecimal valorCaucao;
   private BigDecimal valorTotal;
   private BigDecimal totalPago;
@@ -36,8 +30,6 @@ public class Locacao {
   public Locacao() {
     quantidadeDiarias = 1;
     valorDiaria = BigDecimal.ZERO;
-    valorProtecao = BigDecimal.ZERO;
-    valorAdicionais = BigDecimal.ZERO;
     valorCaucao = BigDecimal.ZERO;
     valorTotal = BigDecimal.ZERO;
     totalPago = BigDecimal.ZERO;
@@ -116,44 +108,12 @@ public class Locacao {
     this.localDevolucao = localDevolucao;
   }
 
-  public String getProtecao() {
-    return protecao;
-  }
-
-  public void setProtecao(String protecao) {
-    this.protecao = protecao;
-  }
-
-  public String getCondutorAdicional() {
-    return condutorAdicional;
-  }
-
-  public void setCondutorAdicional(String condutorAdicional) {
-    this.condutorAdicional = condutorAdicional;
-  }
-
-  public boolean isCadeirinha() {
-    return cadeirinha;
-  }
-
-  public void setCadeirinha(boolean cadeirinha) {
-    this.cadeirinha = cadeirinha;
-  }
-
   public String getLimiteQuilometragem() {
     return limiteQuilometragem;
   }
 
   public void setLimiteQuilometragem(String limiteQuilometragem) {
     this.limiteQuilometragem = limiteQuilometragem;
-  }
-
-  public boolean isCartaoConferido() {
-    return cartaoConferido;
-  }
-
-  public void setCartaoConferido(boolean cartaoConferido) {
-    this.cartaoConferido = cartaoConferido;
   }
 
   public int getQuantidadeDiarias() {
@@ -170,22 +130,6 @@ public class Locacao {
 
   public void setValorDiaria(BigDecimal valorDiaria) {
     this.valorDiaria = valorDiaria;
-  }
-
-  public BigDecimal getValorProtecao() {
-    return valorProtecao;
-  }
-
-  public void setValorProtecao(BigDecimal valorProtecao) {
-    this.valorProtecao = valorProtecao;
-  }
-
-  public BigDecimal getValorAdicionais() {
-    return valorAdicionais;
-  }
-
-  public void setValorAdicionais(BigDecimal valorAdicionais) {
-    this.valorAdicionais = valorAdicionais;
   }
 
   public BigDecimal getValorCaucao() {

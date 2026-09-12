@@ -2,9 +2,8 @@ package view;
 
 import controller.CarroController;
 import model.Carro;
-import model.Cliente;
-
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,9 +16,9 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -31,433 +30,226 @@ public class TelaCarros extends JPanel {
     txtPlaca = new JTextField(30),
     txtModelo = new JTextField(30),
     txtGrupo = new JTextField(30),
-    txtCambio = new JTextField(30),
-    txtNumeroAssento = new JTextField(30),
-    txtLocalAtual = new JTextField(30),
-    txtLimiteQuilometragem = new JTextField(30),
-    txtValorDiaria = new JTextField(30),    
-    txtValorCaucao = new JTextField(30),
-    txtStatus = new JTextField(30),
+    txtNumeroAssento = new JTextField(12),
+    txtValorDiaria = new JTextField(12),
+    txtValorCaucao = new JTextField(12),
     txtPesquisa = new JTextField(25);
-  
   private final JCheckBox chkGps = new JCheckBox("Tem GPS", false);
-  
-  private final DefaultTableModel modelo =
-		    new DefaultTableModel(
-		      new Object[] {
-		        "ID",
-		        "Placa",
-		        "Modelo",
-		        "Grupo",
-		        "Câmbio",
-		        "Número de assentos",
-		        "GPS",
-		        "Local atual",
-		        "Limite de quilometragem",
-		        "Valor da diária",
-		        "Valor Caução",
-		        "Status"
-		      },
-		      0
-		    ) {
-		      public boolean isCellEditable(int linha, int coluna) {
-		        return false;
-		      }
-		    };
-		    
+  private final JComboBox cmbCambio = new JComboBox(new String[] { "MANUAL", "AUTOMATICO" });
+  private final JComboBox cmbStatus = new JComboBox(new String[] { Carro.DISPONIVEL, Carro.LOCADO, Carro.INATIVO });
+  private final DefaultTableModel modelo = new DefaultTableModel(new Object[] { "ID", "Placa", "Modelo", "Grupo", "Cambio", "Assentos", "GPS", "Diaria", "Caucao", "Status" }, 0) {
+    public boolean isCellEditable(int l, int c) {
+      return false;
+    }
+  };
+  private final JTable tabela = new JTable(modelo);
+  private final CarroController controller;
 
-		    private final JTable tabela = new JTable(modelo);
-		    private final CarroController controller;
+  public TelaCarros() {
+    setLayout(new BorderLayout(8, 8));
+    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    controller = new CarroController(this);
+    montar();
+    limparFormulario();
+    controller.carregarTabela();
+  }
 
-		    public TelaCarros() {
-		      setLayout(new BorderLayout(8, 8));
-		      setBorder(
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)
-		      );
+  private void montar() {
+    JPanel formulario = new JPanel(new GridBagLayout());
+    formulario.setBorder(BorderFactory.createTitledBorder("Cadastro de carros"));
+    GridBagConstraints g = new GridBagConstraints();
+    g.insets = new Insets(3, 4, 3, 4);
+    g.anchor = GridBagConstraints.WEST;
+    adicionar(formulario, g, 0, "Codigo:", txtId);
+    adicionar(formulario, g, 1, "Placa*:", txtPlaca);
+    adicionar(formulario, g, 2, "Modelo*:", txtModelo);
+    adicionar(formulario, g, 3, "Grupo*:", txtGrupo);
+    adicionar(formulario, g, 4, "Cambio*:", cmbCambio);
+    adicionar(formulario, g, 5, "Numero de assentos*:", txtNumeroAssento);
+    adicionar(formulario, g, 6, "Valor da diaria*:", txtValorDiaria);
+    adicionar(formulario, g, 7, "Valor da caucao*:", txtValorCaucao);
+    adicionar(formulario, g, 8, "Status*:", cmbStatus);
+    g.gridx = 1;
+    g.gridy = 9;
+    formulario.add(chkGps, g);
+    txtId.setEditable(false);
+    JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JButton novo = new JButton("Novo"),
+      salvar = new JButton("Salvar"),
+      excluir = new JButton("Excluir"),
+      limpar = new JButton("Limpar");
+    botoes.add(novo);
+    botoes.add(salvar);
+    botoes.add(excluir);
+    botoes.add(limpar);
+    JPanel topo = new JPanel(new BorderLayout());
+    topo.add(formulario, BorderLayout.CENTER);
+    topo.add(botoes, BorderLayout.SOUTH);
+    add(topo, BorderLayout.NORTH);
+    JPanel pesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    pesquisa.add(new JLabel("Pesquisar por modelo:"));
+    pesquisa.add(txtPesquisa);
+    JButton buscar = new JButton("Buscar"),
+      todos = new JButton("Mostrar todos");
+    pesquisa.add(buscar);
+    pesquisa.add(todos);
+    JPanel centro = new JPanel(new BorderLayout());
+    centro.add(pesquisa, BorderLayout.NORTH);
+    centro.add(new JScrollPane(tabela), BorderLayout.CENTER);
+    add(centro, BorderLayout.CENTER);
+    tabela.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    novo.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.novo();
+        }
+      });
+    salvar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.salvar();
+        }
+      });
+    excluir.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.excluir();
+        }
+      });
+    limpar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.limpar();
+        }
+      });
+    buscar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.buscar();
+        }
+      });
+    todos.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          txtPesquisa.setText("");
+          controller.carregarTabela();
+        }
+      });
+    tabela.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+          controller.selecionarLinha();
+        }
+      });
+  }
 
-		      controller = new CarroController(this);
+  private void adicionar(JPanel p, GridBagConstraints g, int y, String rotulo, Component campo) {
+    g.gridx = 0;
+    g.gridy = y;
+    g.weightx = 0;
+    g.fill = GridBagConstraints.NONE;
+    p.add(new JLabel(rotulo), g);
+    g.gridx = 1;
+    g.weightx = 1;
+    g.fill = GridBagConstraints.HORIZONTAL;
+    p.add(campo, g);
+  }
 
-		      montar();
-		      controller.carregarTabela();
-		    }
-		    
-		    private void montar() {
-		        JPanel formulario =
-		          new JPanel(new GridBagLayout());
+  public void limparFormulario() {
+    txtId.setText("");
+    txtPlaca.setText("");
+    txtModelo.setText("");
+    txtGrupo.setText("");
+    cmbCambio.setSelectedItem("MANUAL");
+    txtNumeroAssento.setText("");
+    txtValorDiaria.setText("");
+    txtValorCaucao.setText("0,00");
+    cmbStatus.setSelectedItem(Carro.DISPONIVEL);
+    chkGps.setSelected(false);
+    tabela.clearSelection();
+  }
 
-		        formulario.setBorder(
-		          BorderFactory.createTitledBorder(
-		            "Cadastro de carros"
-		          )
-		        );
+  public void definirEdicao(boolean b) {
+    txtPlaca.setEditable(b);
+    txtModelo.setEditable(b);
+    txtGrupo.setEditable(b);
+    cmbCambio.setEnabled(b);
+    txtNumeroAssento.setEditable(b);
+    txtValorDiaria.setEditable(b);
+    txtValorCaucao.setEditable(b);
+    cmbStatus.setEnabled(b);
+    chkGps.setEnabled(b);
+  }
 
-		        GridBagConstraints g = new GridBagConstraints();
-		        g.insets = new Insets(3, 4, 3, 4);
-		        g.anchor = GridBagConstraints.WEST;
+  public void mostrarCarro(Carro c) {
+    txtId.setText(String.valueOf(c.getId()));
+    txtPlaca.setText(c.getPlaca());
+    txtModelo.setText(c.getModeloCarro());
+    txtGrupo.setText(c.getGrupoCarro());
+    cmbCambio.setSelectedItem(c.getCambio());
+    txtNumeroAssento.setText(String.valueOf(c.getNumeroAssentos()));
+    txtValorDiaria.setText(c.getValorDiaria().toPlainString());
+    txtValorCaucao.setText(c.getValorCaucao().toPlainString());
+    cmbStatus.setSelectedItem(c.getStatus());
+    chkGps.setSelected(c.isGps());
+  }
 
-		        adicionar(
-		          formulario,
-		          g,
-		          0,
-		          "Codigo:",
-		          txtId
-		        );
+  public void preencherTabela(List<Carro> lista) {
+    modelo.setRowCount(0);
+    int i;
+    for (i = 0; i < lista.size(); i++) {
+      Carro c = lista.get(i);
+      modelo.addRow(new Object[] { Integer.valueOf(c.getId()), c.getPlaca(), c.getModeloCarro(), c.getGrupoCarro(), c.getCambio(), Integer.valueOf(c.getNumeroAssentos()), c.isGps() ? "Sim" : "Nao", c.getValorDiaria(), c.getValorCaucao(), c.getStatus() });
+    }
+  }
 
-		        adicionar(
-		          formulario,
-		          g,
-		          1,
-		          "Placa*:",
-		          txtPlaca
-		        );
+  public int getIdSelecionado() {
+    try {
+      return Integer.parseInt(txtId.getText());
+    } catch (Exception e) {
+      return 0;
+    }
+  }
 
-		        adicionar(
-		          formulario,
-		          g,
-		          2,
-		          "Modelo*:",
-		          txtModelo
-		        );
+  public JTextField getTxtId() {
+    return txtId;
+  }
 
-		        adicionar(
-		          formulario,
-		          g,
-		          3,
-		          "Grupo*:",
-		          txtGrupo
-		        );
+  public JTextField getTxtPlaca() {
+    return txtPlaca;
+  }
 
-		        adicionar(
-		          formulario,
-		          g,
-		          4,
-		          "Câmbio*:",
-		          txtCambio
-		        );
+  public JTextField getTxtModelo() {
+    return txtModelo;
+  }
 
-		        adicionar(
-		          formulario,
-		          g,
-		          5,
-		          "Número de assentos*:",
-		          txtNumeroAssento
-		        );
-		        
-		        adicionar(
-				          formulario,
-				          g,
-				          6,
-				          "Local Atual*:",
-				          txtLocalAtual
-				        );
-		        
-		        adicionar(
-				          formulario,
-				          g,
-				          7,
-				          "Limite de quilometragem*:",
-				          txtLimiteQuilometragem
-				        );
-		        
-		        adicionar(
-				          formulario,
-				          g,
-				          8,
-				          "Valor da diária*:",
-				          txtValorDiaria
-				        );
-		        
-		        adicionar(
-				          formulario,
-				          g,
-				          9,
-				          "Valor do caução*:",
-				          txtValorCaucao
-				        );
-		        
-		        adicionar(
-				          formulario,
-				          g,
-				          10,
-				          "Status*:",
-				          txtStatus
-				        );
+  public JTextField getTxtGrupo() {
+    return txtGrupo;
+  }
 
-		        txtId.setEditable(false);
+  public JComboBox getCmbCambio() {
+    return cmbCambio;
+  }
 
-		        g.gridx = 1;
-		        g.gridy = 6;
-		        formulario.add(chkGps, g);
+  public JTextField getTxtNumeroAssento() {
+    return txtNumeroAssento;
+  }
 
+  public JTextField getTxtValorDiaria() {
+    return txtValorDiaria;
+  }
 
-		        JPanel botoes =
-		          new JPanel(new FlowLayout(FlowLayout.LEFT));
+  public JTextField getTxtValorCaucao() {
+    return txtValorCaucao;
+  }
 
-		        JButton novo = new JButton("Novo"),
-		          salvar = new JButton("Salvar"),
-		          excluir = new JButton("Excluir"),
-		          limpar = new JButton("Limpar");
+  public JComboBox getCmbStatus() {
+    return cmbStatus;
+  }
 
-		        botoes.add(novo);
-		        botoes.add(salvar);
-		        botoes.add(excluir);
-		        botoes.add(limpar);
+  public JTextField getTxtPesquisa() {
+    return txtPesquisa;
+  }
 
-		        JPanel topo = new JPanel(new BorderLayout());
+  public JCheckBox getChkGps() {
+    return chkGps;
+  }
 
-		        topo.add(formulario, BorderLayout.CENTER);
-		        topo.add(botoes, BorderLayout.SOUTH);
-
-		        add(topo, BorderLayout.NORTH);
-
-		        JPanel pesquisa =
-		          new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-		        pesquisa.add(
-		          new JLabel("Pesquisar por modelo:")
-		        );
-		        pesquisa.add(txtPesquisa);
-
-		        JButton buscar = new JButton("Buscar"),
-		          todos = new JButton("Mostrar todos");
-
-		        pesquisa.add(buscar);
-		        pesquisa.add(todos);
-
-		        JPanel centro = new JPanel(new BorderLayout());
-
-		        centro.add(pesquisa, BorderLayout.NORTH);
-		        centro.add(
-		          new JScrollPane(tabela),
-		          BorderLayout.CENTER
-		        );
-
-		        add(centro, BorderLayout.CENTER);
-
-		        tabela.setSelectionMode(
-		          javax.swing.ListSelectionModel.SINGLE_SELECTION
-		        );
-
-		        novo.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.novo();
-		            }
-		          }
-		        );
-
-		        salvar.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.salvar();
-		            }
-		          }
-		        );
-
-		        excluir.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.excluir();
-		            }
-		          }
-		        );
-
-		        limpar.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.limpar();
-		            }
-		          }
-		        );
-
-		        buscar.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.buscar();
-		            }
-		          }
-		        );
-
-		        todos.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              txtPesquisa.setText("");
-		              controller.carregarTabela();
-		            }
-		          }
-		        );
-
-		        tabela.addMouseListener(
-		          new MouseAdapter() {
-		            public void mouseClicked(MouseEvent e) {
-		              controller.selecionarLinha();
-		            }
-		          }
-		        );
-		      }
-		    
-		    private void adicionar(
-		    	    JPanel painel,
-		    	    GridBagConstraints g,
-		    	    int linha,
-		    	    String rotulo,
-		    	    JTextField campo
-		    	  ) {
-		    	    g.gridx = 0;
-		    	    g.gridy = linha;
-		    	    g.weightx = 0;
-		    	    g.fill = GridBagConstraints.NONE;
-
-		    	    painel.add(new JLabel(rotulo), g);
-
-		    	    g.gridx = 1;
-		    	    g.weightx = 1;
-		    	    g.fill = GridBagConstraints.HORIZONTAL;
-
-		    	    painel.add(campo, g);
-		    	  }
-		    
-		    public void limparFormulario() {
-		    			txtPlaca.setText("");
-		    		    txtModelo.setText("");
-		    		    txtGrupo.setText("");
-		    		    txtCambio.setText("");
-		    		    txtNumeroAssento.setText("");
-		    		    chkGps.setSelected(false);
-		    		    txtLocalAtual.setText("");
-		    		    txtLimiteQuilometragem.setText("");
-		    		    txtValorDiaria.setText("");
-		    		    txtValorCaucao.setText("");
-		    		    txtStatus.setText("");
-		    			tabela.clearSelection();
-		      }
-
-		      public void definirEdicao(boolean habilitado) {
-		    	  			txtPlaca.setEditable(habilitado);
-		    			    txtModelo.setEditable(habilitado);
-		    			    txtGrupo.setEditable(habilitado);
-		    			    txtCambio.setEditable(habilitado);
-		    			    txtNumeroAssento.setEditable(habilitado);
-		    	  			chkGps.setEnabled(habilitado);
-		    	  			txtLocalAtual.setEditable(habilitado);
-		    	  			txtLimiteQuilometragem.setEditable(habilitado);
-		    	  			txtValorDiaria.setEditable(habilitado);
-		    	  			txtValorCaucao.setEditable(habilitado);
-		    	  			txtStatus.setEditable(habilitado);
-		      }
-		      
-		      public void mostrarCliente(Carro carro) {
-		    	    txtId.setText(
-		    	      String.valueOf(carro.getId())
-		    	    );
-		    	    txtPlaca.setText(carro.getPlaca());
-    			    txtModelo.setText(carro.getModeloCarro());
-    			    txtGrupo.setText(carro.getGrupoCarro());
-    			    txtCambio.setText(carro.getCambio());
-    			    txtNumeroAssento.setText(
-    			    	      String.valueOf(carro.getNumeroAssentos())
-    			    	    );
-		    	    chkGps.setSelected(carro.isGps());
-		    	    txtLocalAtual.setText(carro.getLocalAtual());
-		    	    txtLimiteQuilometragem.setText(carro.getLimiteQuilometragem());
-		    	    txtValorDiaria.setText(String.valueOf(carro.getValorDiaria()));
-		    	    txtValorCaucao.setText(String.valueOf(carro.getValorCaucao()));
-		    	    txtStatus.setText(carro.getStatus());
-		    	    
-		    	  }
-		      
-		      public void preencherTabela(List<Carro> lista) {
-		    	    modelo.setRowCount(0);
-
-		    	    int i;
-
-		    	    for (i = 0; i < lista.size(); i++) {
-		    	      Carro carro = lista.get(i);
-
-		    	      modelo.addRow(
-		    	        new Object[] {
-		    	          Integer.valueOf(carro.getId()),
-		    	          carro.getPlaca(),
-		    	          carro.getModeloCarro(),
-		    	          carro.getGrupoCarro(),
-		    	          carro.getCambio(),		    	          
-		    	          Integer.valueOf(carro.getNumeroAssentos()),
-		    	          carro.isGps() ? "Sim" : "Nao",
-		    	          carro.getLocalAtual(),
-		    	          carro.getLimiteQuilometragem(),
-		    	          carro.getValorDiaria(),
-		    	          carro.getValorCaucao(),
-		    	          carro.getStatus(),
-		    	        }
-		    	      );
-		    	    }
-		    	  }
-
-		    	  public int getIdSelecionado() {
-		    	    try {
-		    	      return Integer.parseInt(
-		    	        txtId.getText()
-		    	      );
-		    	    } catch (Exception e) {
-		    	      return 0;
-		    	    }
-		    	  }
-
-				  public JTextField getTxtId() {
-					  return txtId;
-				  }
-
-				  public JTextField getTxtPlaca() {
-					  return txtPlaca;
-				  }
-
-				  public JTextField getTxtModelo() {
-					  return txtModelo;
-				  }
-
-				  public JTextField getTxtGrupo() {
-					  return txtGrupo;
-				  }
-
-				  public JTextField getTxtCambio() {
-					  return txtCambio;
-				  }
-
-				  public JTextField getTxtNumeroAssento() {
-					  return txtNumeroAssento;
-				  }
-
-				  public JTextField getTxtLocalAtual() {
-					  return txtLocalAtual;
-				  }
-
-				  public JTextField getTxtLimiteQuilometragem() {
-					  return txtLimiteQuilometragem;
-				  }
-
-				  public JTextField getTxtValorDiaria() {
-					  return txtValorDiaria;
-				  }
-
-				  public JTextField getTxtValorCaucao() {
-					  return txtValorCaucao;
-				  }
-
-				  public JTextField getTxtStatus() {
-					  return txtStatus;
-				  }
-
-				  public JTextField getTxtPesquisa() {
-					  return txtPesquisa;
-				  }
-
-				  public JCheckBox getChkGps() {
-					  return chkGps;
-				  }
-
-				  public JTable getTabela() {
-					  return tabela;
-				  }
-
+  public JTable getTabela() {
+    return tabela;
+  }
 
 }

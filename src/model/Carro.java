@@ -15,8 +15,6 @@ public class Carro {
   private String cambio;
   private int numeroAssentos;
   private boolean gps;
-  private String localAtual;
-  private String limiteQuilometragem;
   private BigDecimal valorDiaria;
   private BigDecimal valorCaucao;
   private String status;
@@ -81,22 +79,6 @@ public class Carro {
 
   public void setGps(boolean gps) {
     this.gps = gps;
-  }
-
-  public String getLocalAtual() {
-    return localAtual;
-  }
-
-  public void setLocalAtual(String localAtual) {
-    this.localAtual = localAtual;
-  }
-
-  public String getLimiteQuilometragem() {
-    return limiteQuilometragem;
-  }
-
-  public void setLimiteQuilometragem(String limiteQuilometragem) {
-    this.limiteQuilometragem = limiteQuilometragem;
   }
 
   public BigDecimal getValorDiaria() {

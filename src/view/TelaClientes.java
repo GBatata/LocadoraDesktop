@@ -3,7 +3,6 @@ package view;
 import controller.ClienteController;
 import model.Cliente;
 import util.Validador;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -19,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -28,400 +26,231 @@ import javax.swing.table.DefaultTableModel;
 public class TelaClientes extends JPanel {
 
   private final JTextField txtId = new JTextField(8),
-    txtNome = new JTextField(30),    
-    txtCpf = new JTextField(16),
-    txtCnh = new JTextField(16),
+    txtNome = new JTextField(30),
+    txtCpf = new JTextField(30),
+    txtCnh = new JTextField(30),
     txtDataNascimento = new JTextField(12),
     txtNacionalidade = new JTextField(30),
     txtEmail = new JTextField(30),
     txtCelular = new JTextField(30),
     txtPesquisa = new JTextField(25);
-  
-  private final JCheckBox chkResideBr =
-		    new JCheckBox("Reside no Brasil", true);
-  
-  private final DefaultTableModel modelo =
-		    new DefaultTableModel(
-		      new Object[] {
-		        "ID",
-		        "Nome",		        
-		        "CPF",
-		        "CNH",
-		        "Data de nascimento",		        
-		        "Nacionalidade",
-		        "Reside no Brasil",
-		        "E-mail",
-		        "Celular"
-		      },
-		      0
-		    ) {
-		      public boolean isCellEditable(int linha, int coluna) {
-		        return false;
-		      }
-		    };
-		    
-		    private final JTable tabela = new JTable(modelo);
-		    private final ClienteController controller;
+  private final JCheckBox chkResideBr = new JCheckBox("Reside no Brasil", true);
+  private final JCheckBox chkAtivo = new JCheckBox("Cliente ativo", true);
+  private final DefaultTableModel modelo = new DefaultTableModel(new Object[] { "ID", "Nome", "CPF", "CNH", "Data de nascimento", "Nacionalidade", "Reside no Brasil", "E-mail", "Celular", "Ativo" }, 0) {
+    public boolean isCellEditable(int l, int c) {
+      return false;
+    }
+  };
+  private final JTable tabela = new JTable(modelo);
+  private final ClienteController controller;
 
-		    public TelaClientes() {
-		      setLayout(new BorderLayout(8, 8));
-		      setBorder(
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)
-		      );
-		      
-		      controller = new ClienteController(this);
+  public TelaClientes() {
+    setLayout(new BorderLayout(8, 8));
+    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    controller = new ClienteController(this);
+    montar();
+    limparFormulario();
+    controller.carregarTabela();
+  }
 
-		      montar();
-		      controller.carregarTabela();		      
-		    }
-		    
-		    private void montar() {
-		        JPanel formulario =
-		          new JPanel(new GridBagLayout());
+  private void montar() {
+    JPanel formulario = new JPanel(new GridBagLayout());
+    formulario.setBorder(BorderFactory.createTitledBorder("Cadastro de clientes"));
+    GridBagConstraints g = new GridBagConstraints();
+    g.insets = new Insets(3, 4, 3, 4);
+    g.anchor = GridBagConstraints.WEST;
+    adicionar(formulario, g, 0, "Codigo:", txtId);
+    adicionar(formulario, g, 1, "Nome*:", txtNome);
+    adicionar(formulario, g, 2, "CPF*:", txtCpf);
+    adicionar(formulario, g, 3, "CNH*:", txtCnh);
+    adicionar(formulario, g, 4, "Data de nascimento*:", txtDataNascimento);
+    adicionar(formulario, g, 5, "Nacionalidade*:", txtNacionalidade);
+    adicionar(formulario, g, 6, "E-mail:", txtEmail);
+    adicionar(formulario, g, 7, "Celular*:", txtCelular);
+    g.gridx = 1;
+    g.gridy = 8;
+    formulario.add(chkResideBr, g);
+    g.gridy = 9;
+    formulario.add(chkAtivo, g);
+    txtId.setEditable(false);
+    txtDataNascimento.setToolTipText("Utilize o formato dd/MM/yyyy");
+    JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JButton novo = new JButton("Novo"),
+      salvar = new JButton("Salvar"),
+      excluir = new JButton("Inativar"),
+      limpar = new JButton("Limpar");
+    botoes.add(novo);
+    botoes.add(salvar);
+    botoes.add(excluir);
+    botoes.add(limpar);
+    JPanel topo = new JPanel(new BorderLayout());
+    topo.add(formulario, BorderLayout.CENTER);
+    topo.add(botoes, BorderLayout.SOUTH);
+    add(topo, BorderLayout.NORTH);
+    JPanel pesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    pesquisa.add(new JLabel("Pesquisar por nome:"));
+    pesquisa.add(txtPesquisa);
+    JButton buscar = new JButton("Buscar"),
+      todos = new JButton("Mostrar todos");
+    pesquisa.add(buscar);
+    pesquisa.add(todos);
+    JPanel centro = new JPanel(new BorderLayout());
+    centro.add(pesquisa, BorderLayout.NORTH);
+    centro.add(new JScrollPane(tabela), BorderLayout.CENTER);
+    add(centro, BorderLayout.CENTER);
+    tabela.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    novo.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.novo();
+        }
+      });
+    salvar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.salvar();
+        }
+      });
+    excluir.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.excluir();
+        }
+      });
+    limpar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.limpar();
+        }
+      });
+    buscar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.buscar();
+        }
+      });
+    todos.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          txtPesquisa.setText("");
+          controller.carregarTabela();
+        }
+      });
+    tabela.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+          controller.selecionarLinha();
+        }
+      });
+  }
 
-		        formulario.setBorder(
-		          BorderFactory.createTitledBorder(
-		            "Cadastro de clientes"
-		          )
-		        );
+  private void adicionar(JPanel p, GridBagConstraints g, int y, String rotulo, JTextField campo) {
+    g.gridx = 0;
+    g.gridy = y;
+    g.weightx = 0;
+    g.fill = GridBagConstraints.NONE;
+    p.add(new JLabel(rotulo), g);
+    g.gridx = 1;
+    g.weightx = 1;
+    g.fill = GridBagConstraints.HORIZONTAL;
+    p.add(campo, g);
+  }
 
-		        GridBagConstraints g = new GridBagConstraints();
-		        g.insets = new Insets(3, 4, 3, 4);
-		        g.anchor = GridBagConstraints.WEST;
+  public void limparFormulario() {
+    txtId.setText("");
+    txtNome.setText("");
+    txtCpf.setText("");
+    txtCnh.setText("");
+    txtDataNascimento.setText("");
+    txtNacionalidade.setText("");
+    txtEmail.setText("");
+    txtCelular.setText("");
+    chkResideBr.setSelected(true);
+    chkAtivo.setSelected(true);
+    tabela.clearSelection();
+  }
 
-		        adicionar(
-				          formulario,
-				          g,
-				          0,
-				          "Codigo:",
-				          txtId
-				        );
+  public void definirEdicao(boolean b) {
+    txtNome.setEditable(b);
+    txtCpf.setEditable(b);
+    txtCnh.setEditable(b);
+    txtDataNascimento.setEditable(b);
+    txtNacionalidade.setEditable(b);
+    txtEmail.setEditable(b);
+    txtCelular.setEditable(b);
+    chkResideBr.setEnabled(b);
+    chkAtivo.setEnabled(b);
+  }
 
-		        adicionar(
-				          formulario,
-				          g,
-				          1,
-				          "Nome*:",
-				          txtNome
-				        );
-		        
-		        
+  public void mostrarCliente(Cliente c) {
+    txtId.setText(String.valueOf(c.getId()));
+    txtNome.setText(c.getNome());
+    txtCpf.setText(c.getCpf());
+    txtCnh.setText(c.getCnh());
+    txtDataNascimento.setText(Validador.formatarData(c.getDataNascimento()));
+    txtNacionalidade.setText(c.getNacionalidade());
+    txtEmail.setText(c.getEmail());
+    txtCelular.setText(c.getCelular());
+    chkResideBr.setSelected(c.isResideBrasil());
+    chkAtivo.setSelected(c.isAtivo());
+  }
 
-		        adicionar(
-				          formulario,
-				          g,
-				          2,
-				          "CPF*:",
-				          txtCpf
-				        );
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  3,
-						  "CNH*:",
-						  txtCnh
-						);
-		        
-		        adicionar(
-				          formulario,
-				          g,
-				          4,
-				          "Data de nascimento*:",
-				          txtDataNascimento
-				        );
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  5,
-						  "Nacionalidade*:",
-						  txtNacionalidade
-						);
-		        
-		        
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  6,
-						  "E-mail:",
-						  txtEmail
-						);
-		        
-		        adicionar(
-						  formulario,
-						  g,
-						  7,
-						  "Celular*:",
-						  txtCelular
-						);
-		        
+  public void preencherTabela(List<Cliente> lista) {
+    modelo.setRowCount(0);
+    int i;
+    for (i = 0; i < lista.size(); i++) {
+      Cliente c = lista.get(i);
+      modelo.addRow(new Object[] { Integer.valueOf(c.getId()), c.getNome(), c.getCpf(), c.getCnh(), Validador.formatarData(c.getDataNascimento()), c.getNacionalidade(), c.isResideBrasil() ? "Sim" : "Nao", c.getEmail(), c.getCelular(), c.isAtivo() ? "Sim" : "Nao" });
+    }
+  }
 
-		        txtId.setEditable(false);
+  public int getIdSelecionado() {
+    try {
+      return Integer.parseInt(txtId.getText());
+    } catch (Exception e) {
+      return 0;
+    }
+  }
 
-		        txtDataNascimento.setToolTipText(
-		          "Utilize o formato dd/MM/yyyy"
-		        );
-		        
-		        g.gridx = 1;
-		        g.gridy = 6;
-		        formulario.add(chkResideBr, g);
+  public JTextField getTxtId() {
+    return txtId;
+  }
 
-		        JPanel botoes =
-		          new JPanel(new FlowLayout(FlowLayout.LEFT));
+  public JTextField getTxtNome() {
+    return txtNome;
+  }
 
-		        JButton novo = new JButton("Novo"),
-		          salvar = new JButton("Salvar"),
-		          excluir = new JButton("Excluir"),
-		          limpar = new JButton("Limpar");
+  public JTextField getTxtCpf() {
+    return txtCpf;
+  }
 
-		        botoes.add(novo);
-		        botoes.add(salvar);
-		        botoes.add(excluir);
-		        botoes.add(limpar);
+  public JTextField getTxtCnh() {
+    return txtCnh;
+  }
 
-		        JPanel topo = new JPanel(new BorderLayout());
+  public JTextField getTxtDataNascimento() {
+    return txtDataNascimento;
+  }
 
-		        topo.add(formulario, BorderLayout.CENTER);
-		        topo.add(botoes, BorderLayout.SOUTH);
+  public JTextField getTxtNacionalidade() {
+    return txtNacionalidade;
+  }
 
-		        add(topo, BorderLayout.NORTH);
+  public JTextField getTxtEmail() {
+    return txtEmail;
+  }
 
-		        JPanel pesquisa =
-		          new JPanel(new FlowLayout(FlowLayout.LEFT));
+  public JTextField getTxtCelular() {
+    return txtCelular;
+  }
 
-		        pesquisa.add(
-		          new JLabel("Pesquisar por nome:")
-		        );
-		        pesquisa.add(txtPesquisa);
+  public JTextField getTxtPesquisa() {
+    return txtPesquisa;
+  }
 
-		        JButton buscar = new JButton("Buscar"),
-		          todos = new JButton("Mostrar todos");
+  public JCheckBox getChkResideBr() {
+    return chkResideBr;
+  }
 
-		        pesquisa.add(buscar);
-		        pesquisa.add(todos);
+  public JCheckBox getChkAtivo() {
+    return chkAtivo;
+  }
 
-		        JPanel centro = new JPanel(new BorderLayout());
+  public JTable getTabela() {
+    return tabela;
+  }
 
-		        centro.add(pesquisa, BorderLayout.NORTH);
-		        centro.add(
-		          new JScrollPane(tabela),
-		          BorderLayout.CENTER
-		        );
-
-		        add(centro, BorderLayout.CENTER);
-
-		        tabela.setSelectionMode(
-		          javax.swing.ListSelectionModel.SINGLE_SELECTION
-		        );
-
-		        novo.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.novo();
-		            }
-		          }
-		        );
-
-		        salvar.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.salvar();
-		            }
-		          }
-		        );
-
-		        excluir.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.excluir();
-		            }
-		          }
-		        );
-
-		        limpar.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.limpar();
-		            }
-		          }
-		        );
-
-		        buscar.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              controller.buscar();
-		            }
-		          }
-		        );
-
-		        todos.addActionListener(
-		          new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		              txtPesquisa.setText("");
-		              controller.carregarTabela();
-		            }
-		          }
-		        );
-
-		        tabela.addMouseListener(
-		          new MouseAdapter() {
-		            public void mouseClicked(MouseEvent e) {
-		              controller.selecionarLinha();
-		            }
-		          }
-		        );
-		      }
-		    
-		    
-		    private void adicionar(
-		    	    JPanel painel,
-		    	    GridBagConstraints g,
-		    	    int linha,
-		    	    String rotulo,
-		    	    JTextField campo
-		    	  ) {
-		    	    g.gridx = 0;
-		    	    g.gridy = linha;
-		    	    g.weightx = 0;
-		    	    g.fill = GridBagConstraints.NONE;
-
-		    	    painel.add(new JLabel(rotulo), g);
-
-		    	    g.gridx = 1;
-		    	    g.weightx = 1;
-		    	    g.fill = GridBagConstraints.HORIZONTAL;
-
-		    	    painel.add(campo, g);
-		    	  }
-		    
-
-		    public void limparFormulario() {
-		    			txtId.setText("");
-		    			txtNome.setText("");		    		    
-		    		    txtCpf.setText("");
-		    		    txtCnh.setText("");
-		    		    txtDataNascimento.setText("");
-		    		    txtNacionalidade.setText("");
-		    		    chkResideBr.setSelected(true);
-		    		    txtEmail.setText("");
-		    		    txtCelular.setText("");        
-		    		    tabela.clearSelection();
-		    }
-		    
-		    public void definirEdicao(boolean habilitado) {
-		    			txtNome.setEditable(habilitado);
-		    		    txtDataNascimento.setEditable(habilitado);
-		    		    txtCpf.setEditable(habilitado);
-		    		    txtCnh.setEditable(habilitado);
-		    		    txtNacionalidade.setEditable(habilitado);
-		    		    txtEmail.setEditable(habilitado);
-		    		    txtCelular.setEditable(habilitado);
-		      }
-		    
-		    public void mostrarCliente(Cliente cliente) {
-		        txtId.setText(
-		          String.valueOf(cliente.getId())
-		        );
-		        
-		        		txtNome.setText(cliente.getNome());		        	    
-		        	    txtCpf.setText(cliente.getCpf());
-		        	    txtCnh.setText(cliente.getCnh());
-		        	    txtDataNascimento.setText(
-		        	    	      Validador.formatarData(
-		        	    	    	        cliente.getDataNascimento()
-		        	    	    	      )
-		        	    	    	    );
-		        	    txtNacionalidade.setText(cliente.getNacionalidade());
-		        	    txtEmail.setText(cliente.getEmail());
-		        	    txtCelular.setText(cliente.getCelular());
-		        	    chkResideBr.setSelected(cliente.isResideBrasil());
-		        
-		      }
-		    
-		    
-		    
-		    public void preencherTabela(List<Cliente> lista) {
-		        modelo.setRowCount(0);
-
-		        int i;
-
-		        for (i = 0; i < lista.size(); i++) {
-		          Cliente cliente = lista.get(i);
-
-		          modelo.addRow(
-		            new Object[] {
-		              Integer.valueOf(cliente.getId()),
-		              cliente.getNome(),		              
-		              cliente.getCpf(),
-		              cliente.getCnh(),
-		              Validador.formatarData(
-		                cliente.getDataNascimento()
-		              ),
-		              cliente.getNacionalidade(),
-		              cliente.getEmail(),
-		              cliente.getCelular(),
-		              cliente.isResideBrasil() ? "Sim" : "Nao"
-		            }
-		          );
-		        }
-		    }
-		        
-		        public int getIdSelecionado() {
-		            try {
-		              return Integer.parseInt(
-		                txtId.getText()
-		              );
-		            } catch (Exception e) {
-		              return 0;
-		            }
-		          }
-		      
-
-			public JTextField getTxtId() {
-				return txtId;
-			}
-
-			public JTextField getTxtNome() {
-				return txtNome;
-			}
-
-			public JTextField getTxtDataNascimento() {
-				return txtDataNascimento;
-			}
-
-			public JTextField getTxtCpf() {
-				return txtCpf;
-			}
-
-			public JTextField getTxtCnh() {
-				return txtCnh;
-			}
-
-			public JTextField getTxtNacionalidade() {
-				return txtNacionalidade;
-			}
-
-			public JTextField getTxtEmail() {
-				return txtEmail;
-			}
-
-			public JTextField getTxtCelular() {
-				return txtCelular;
-			}
-
-			public JTextField getTxtPesquisa() {
-				return txtPesquisa;
-			}
-
-			public JTable getTabela() {
-				return tabela;
-			}
-
-			public JCheckBox getChkResideBr() {
-				return chkResideBr;
-			}
-		    
-		    
 }
